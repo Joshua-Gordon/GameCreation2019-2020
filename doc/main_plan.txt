@@ -1,0 +1,5 @@
+The main function will load SDL2, create the window, set the game state to character creation, and then handle input and pass control to a game object until it is time to unload SDL2 and quit the game. Furthermore, this function controls FPS.
+
+The game object is a state machine that tracks things such as when it is character creation, or the pause menu, or what level the player is on. It has a renderer object and maintains a list of renderable objects on screen. It may reference a level object if the game state calls for it.
+
+
