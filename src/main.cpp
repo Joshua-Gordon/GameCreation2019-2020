@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include "util/Timer.h"
 #include "util/Texture.h"
+#include "util/Textbox.h"
 
 /* CONSTANTS */
 #define TITLE "cool preprocessor title"
@@ -21,11 +22,52 @@ SDL_Renderer* renderer = NULL;
 void init();
 void close();
 
+Timer fps_timer;
+Timer cap_timer;
+int frames_since_start;
+
 int main(int argc, char** argv) {
 
     init();
 
     printf("Init done\n");
+
+    fps_timer.start();
+    frames_since_start = 0;
+
+    SDL_Event e;
+    bool done = false;
+
+    Texture text = getTextBox(renderer,"assets/Sans.ttf",24,"work plz");
+
+    while(!done) { //game loop
+        cap_timer.start();
+        while(SDL_PollEvent(&e) != 0) {
+            if(e.type == SDL_QUIT) {
+                done = true;
+                break;
+            }
+            if(e.type == SDL_KEYDOWN) {
+                if(e.key.keysym.sym == SDLK_q) {
+                    done = true;
+                    break;
+                }
+            }
+        } //input is handled
+
+        SDL_RenderClear(renderer);
+    
+        //render stuff
+        text.render(100 + frames_since_start,200);
+        
+        SDL_RenderPresent(renderer);
+
+        ++frames_since_start;
+        int num_ticks = cap_timer.getTicks();
+        if(num_ticks < TICKS_PER_FRAME) {
+            SDL_Delay(TICKS_PER_FRAME-num_ticks);
+        }
+    }
 
     close();
     return 0;
@@ -41,6 +83,7 @@ int main(int argc, char** argv) {
 void init() {
     CHECK(SDL_Init(SDL_INIT_VIDEO)); //Video
     CHECK(IMG_Init(IMG_INIT_PNG));   //PNG
+    CHECK(TTF_Init());
 
     window = SDL_CreateWindow(TITLE,SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,S_W,S_H,SDL_WINDOW_SHOWN);
     if(window == NULL) {

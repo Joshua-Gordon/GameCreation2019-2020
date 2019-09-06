@@ -15,6 +15,7 @@ private:
 
 public:
     Texture();
+    Texture(SDL_Texture* t,int w, int h) : texture_(t), w_(w), h_(h) {}
     ~Texture();
 
     bool loadFromFile(std::string path);
