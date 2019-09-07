@@ -5,6 +5,8 @@
 #include "util/Timer.h"
 #include "util/Texture.h"
 #include "util/Textbox.h"
+#include "scene.h"
+#include "sprite.h"
 
 #define TITLE "cool preprocessor title"
 #define S_W 1280
@@ -21,8 +23,9 @@ class Game {
 		unsigned frames_;
 		bool running_;
 
-		Texture scene_;
-		Texture image_;
+		Scene root_;
+		Sprite text_, pizza_;
+		Texture text_t, pizza_t;
 
 	public:
 		Game();
@@ -33,6 +36,8 @@ class Game {
 		Timer *timer() { return &timer_; }
 		unsigned frames() { return frames_; }
 		bool running() { return running_; }
+		Scene *root() { return &root_; }
+
 		void stop() { running_ = false; }
 
 		void run();
