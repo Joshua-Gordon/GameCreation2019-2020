@@ -36,16 +36,16 @@ Game::Game() : timer_(), frames_(0), running_(false) {
 
 	SDL_SetRenderDrawColor(renderer_, 0xff, 0x00, 0xff, 0xff);
 
-	fprintf(stderr, "G::G: renderer %p\n", renderer_);
-
-	scene_ = getTextBox(renderer_, "assets/Sans.ttf", 24, "plz work yo");
-	image_.setRenderer(renderer_);
-	image_.loadFromFile("pizza.png");
+	text_t = getTextBox(renderer_, "assets/Sans.ttf", 24, "yolo swaggins");
+	text_ = Sprite(&text_t, 100, 200);
+	pizza_t.setRenderer(renderer_);
+	pizza_t.loadFromFile("pizza.png");
+	pizza_ = Sprite(&pizza_t, 0, 100);
+	text_.addChild(&pizza_);
+	root_.addChild(&text_);
 }
 
 Game::~Game() {
-	scene_.free();
-	image_.free();
 	SDL_DestroyRenderer(renderer_);
 	renderer_ = NULL;
 	SDL_DestroyWindow(window_);
@@ -93,8 +93,6 @@ void Game::handle(SDL_Event &e) {
 }
 
 void Game::render() {
-	fprintf(stderr, "%u %d %d\n", frames_, scene_.getWidth(), scene_.getHeight());
-	fprintf(stderr, "G::r: renderer %p\n", renderer_);
-	scene_.render(100 + frames_, 200);
-	image_.render(100 + frames_, 300);
+	text_.setX(100 + frames_);
+	root_.render(RenderProxy());
 }
