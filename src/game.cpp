@@ -34,13 +34,17 @@ Game::Game() : timer_(), frames_(0), running_(false) {
 		ABORT("Renderer creation failed: %s\n", SDL_GetError());
 	}
 
-	SDL_SetRenderDrawColor(renderer_, 0xff, 0x00, 0xff, 0xff);
+	SDL_SetRenderDrawColor(renderer_, 0x77, 0x00, 0x77, 0xff);
 
 	text_t = getTextBox(renderer_, "assets/Sans.ttf", 24, "yolo swaggins");
 	text_ = Sprite(&text_t, 100, 200);
 	pizza_t.setRenderer(renderer_);
 	pizza_t.loadFromFile("pizza.png");
 	pizza_ = Sprite(&pizza_t, 0, 100);
+	ply_t.setRenderer(renderer_);
+	ply_t.loadFromFile("assets/char_walk_forward.png");
+	ply_ = AnimatedSprite(&ply_t, 0, 100, 3, 1);
+	pizza_.addChild(&ply_);
 	text_.addChild(&pizza_);
 	root_.addChild(&text_);
 }
@@ -94,5 +98,5 @@ void Game::handle(SDL_Event &e) {
 
 void Game::render() {
 	text_.setX(100 + frames_);
-	root_.render(RenderProxy());
+	root_.render(RenderProxy(), globalState());
 }

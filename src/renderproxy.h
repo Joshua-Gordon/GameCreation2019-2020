@@ -12,5 +12,8 @@ class RenderProxy {
 		RenderProxy(const RenderProxy &r) : x_off(r.x_off), y_off(r.y_off) {}
 		RenderProxy(const RenderProxy &r, int x, int y) : x_off(r.x_off + x), y_off(r.y_off + y) {}
 
+		int x() const { return x_off; }
+		int y() const { return y_off; }
+
 		void render(Texture &, int = 0, int = 0, SDL_Rect * = NULL) const;
 };

@@ -22,12 +22,12 @@ tryAgain:
 	parent_ = NULL;
 }
 
-void Scene::renderChildren(const RenderProxy &r) {
+void Scene::renderChildren(const RenderProxy &r, const GlobalState &gs) {
 	for(auto it = children_.begin(); it != children_.end(); it++) {
-		(*it)->render(r);
+		(*it)->render(r, gs);
 	}
 }
 
-void Scene::render(const RenderProxy &r) {
-	renderChildren(r);
+void Scene::render(const RenderProxy &r, const GlobalState &gs) {
+	renderChildren(r, gs);
 }

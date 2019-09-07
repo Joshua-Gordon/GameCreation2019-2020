@@ -5,14 +5,17 @@
 #include "util/Timer.h"
 #include "util/Texture.h"
 #include "util/Textbox.h"
-#include "scene.h"
 #include "sprite.h"
+#include "scene.h"
+#include "animatedsprite.h"
+#include "globalstate.h"
 
 #define TITLE "cool preprocessor title"
 #define S_W 1280
 #define S_H 960
 #define MAX_FPS 60
 #define TICKS_PER_FRAME (1000 / MAX_FPS)
+
 
 class Game {
 	protected:
@@ -25,18 +28,29 @@ class Game {
 
 		Scene root_;
 		Sprite text_, pizza_;
-		Texture text_t, pizza_t;
+		AnimatedSprite ply_;
+		Texture text_t, pizza_t, ply_t;
 
 	public:
 		Game();
 		~Game();
 
-		SDL_Renderer *renderer() { return renderer_; }
-		SDL_Window *window() { return window_; }
-		Timer *timer() { return &timer_; }
-		unsigned frames() { return frames_; }
-		bool running() { return running_; }
-		Scene *root() { return &root_; }
+		const SDL_Renderer *renderer() const { return renderer_; }
+		const SDL_Window *window() const { return window_; }
+		const Timer *timer() const { return &timer_; }
+		unsigned frames() const { return frames_; }
+		bool running() const { return running_; }
+		const Scene *root() const { return &root_; }
+
+		const GlobalState globalState() const {
+			return GlobalState {
+				renderer_,
+				window_,
+				&timer_,
+				frames_,
+				running_
+			};
+		}
 
 		void stop() { running_ = false; }
 

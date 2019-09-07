@@ -27,6 +27,6 @@ public:
     
     void render(int x, int y, SDL_Rect* clip = NULL);
 
-    int getWidth();
-    int getHeight();
+    int getWidth() const;
+    int getHeight() const;
 };

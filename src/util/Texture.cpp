@@ -52,13 +52,16 @@ void Texture::render(int x, int y, SDL_Rect* clip) {
     }
 
 	fprintf(stderr, "T::r %p %d,%d,%d,%d\n", clip, renderQuad.x, renderQuad.y, renderQuad.w, renderQuad.h);
+	if(clip) {
+		fprintf(stderr, "T::r  - clip %d,%d,%d,%d\n", clip->x, clip->y, clip->w, clip->h);
+	}
     SDL_RenderCopy(renderer_, texture_,clip,&renderQuad);
 }
 
-int Texture::getWidth() {
+int Texture::getWidth() const {
     return w_;
 }
 
-int Texture::getHeight() {
+int Texture::getHeight() const {
     return h_;
 }
