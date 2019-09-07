@@ -1,0 +1,23 @@
+Images
+    Player
+    Enviroment
+        Tiles
+    Enemies
+    Menus
+    Logo
+Level
+    Level Class
+        Location of enemies and doors
+        Tile locations
+        Render where player is
+    Level Design
+    ProcGen code
+Game
+    Combat
+    Saving & Loading
+    Menu navigation
+    Movement (Space & Time)
+Player
+    Equipment Slots
+    Stats
+    Part durability
