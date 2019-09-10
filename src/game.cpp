@@ -47,6 +47,10 @@ Game::Game() : timer_(), frames_(0), running_(false) {
 	pizza_.addChild(&ply_);
 	text_.addChild(&pizza_);
 	root_.addChild(&text_);
+    fprintf(stderr,"Loading map...\n");
+    lm.setRenderer(renderer_);
+    lm.load_from_file("assets/test_map.png");
+    fprintf(stderr,"Loaded map!\n");
 }
 
 Game::~Game() {
@@ -97,6 +101,7 @@ void Game::handle(SDL_Event &e) {
 }
 
 void Game::render() {
-	text_.setX(100 + frames_);
-	root_.render(RenderProxy(), globalState());
+	//text_.setX(100 + frames_);
+	//root_.render(RenderProxy(), globalState());
+    lm.render();
 }

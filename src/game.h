@@ -9,6 +9,7 @@
 #include "scene.h"
 #include "animatedsprite.h"
 #include "globalstate.h"
+#include "levelmap.h"
 
 #define TITLE "cool preprocessor title"
 #define S_W 1280
@@ -30,6 +31,8 @@ class Game {
 		Sprite text_, pizza_;
 		AnimatedSprite ply_;
 		Texture text_t, pizza_t, ply_t;
+
+        LevelMap lm;
 
 	public:
 		Game();
