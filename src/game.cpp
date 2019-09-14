@@ -50,6 +50,7 @@ Game::Game() : timer_(), frames_(0), running_(false) {
     fprintf(stderr,"Loading map...\n");
     lm.setRenderer(renderer_);
     lm.load_from_file("assets/test_map.png");
+    lm.setScreenSize(S_W,S_H);
     fprintf(stderr,"Loaded map!\n");
 }
 
@@ -80,6 +81,7 @@ void Game::run() {
 
 		SDL_RenderClear(renderer_);
 		render();
+        update();
 		SDL_RenderPresent(renderer_);
 
 		frames_++;
@@ -94,14 +96,18 @@ void Game::handle(SDL_Event &e) {
 	if(e.type == SDL_QUIT) {
 		stop();
 	}
-
+    lm.handle(&e);
 	if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_q) {
 		stop();
 	}
 }
 
 void Game::render() {
+    lm.render();
 	//text_.setX(100 + frames_);
 	//root_.render(RenderProxy(), globalState());
-    lm.render();
+}
+
+void Game::update() {
+    lm.update();
 }

@@ -1,7 +1,8 @@
 #include "levelmap.h"
 
 LevelMap::LevelMap() {
-    w_ = h_ = x_ = y_ = -1;
+    w_ = h_ = x_ = y_ = 0;
+    vx_ = vy_ = 0;
     zoom_level = -1;
     tiles = NULL;
 }
@@ -37,9 +38,11 @@ Uint32 getpixel(SDL_Surface *surface, int x, int y) {
     }
 }
 
-LevelMap::LevelMap(const char* fname,SDL_Renderer* r) {
+LevelMap::LevelMap(const char* fname,SDL_Renderer* r, int w, int h) {
     rend = r;
     load_from_file(fname);
+    S_W = w;
+    S_H = h;
 }
 
 void LevelMap::load_from_file(const char* fname) {
@@ -65,8 +68,8 @@ void LevelMap::load_from_file(const char* fname) {
         floor_textures[i].loadFromFile(path);
         floor_textures[i].debug();
     }
-    wall.loadFromFile("assets/wall.png");
     wall.setRenderer(rend);
+    wall.loadFromFile("assets/wall.png");
     fprintf(stderr,"Assets are loaded\n");
 }
 
@@ -79,7 +82,7 @@ LevelMap::~LevelMap() {
 
 Texture* LevelMap::random_floor() {
     int idx = rand() % NUM_FLOORS;
-    fprintf(stderr,"Rendering floor %d\n",idx);
+    //fprintf(stderr,"Rendering floor %d\n",idx);
     return floor_textures + idx;
 }
 
@@ -92,34 +95,79 @@ void LevelMap::print() {
     }
 }
 
-void LevelMap::render() {
-    fprintf(stderr,"LM::r\n");
-    for(int dx = x_ - VISION_RADIUS_MAX; dx < x_ + VISION_RADIUS_MAX; dx++) {
+void LevelMap::render() { //needs rewrite
+   
+    int viz_x = (S_W/2)/TILE_SIZE;
+    int viz_y = (S_H/2)/TILE_SIZE;
+
+    for(int dx = x_ - viz_x; dx < x_ + viz_x; ++dx) {
+
         if(dx >= 0 && dx < w_) {
 
-            for(int dy = y_ - VISION_RADIUS_MAX; dy < y_ + VISION_RADIUS_MAX; dy++) {
+            for(int dy = y_ - viz_y; dy < y_ + viz_y; ++dy) {
+
                 if(dy >= 0 && dy < h_) {
-                    int screen_x = TILE_SIZE*(dx - x_ + VISION_RADIUS_MAX);
-                    int screen_y = TILE_SIZE*(dy - y_ + VISION_RADIUS_MAX);
-                    fprintf(stderr,"Rendering tile [%d][%d] at (%d,%d)\n",dx,dy,screen_x,screen_y);
-                    fprintf(stderr,"w_ = %d, h_ = %d\n",w_,h_);
-                    fprintf(stderr,"x_ = %d, y_ = %d\n",x_,y_);
-                    switch(tiles[dx][dy]) {
-                        case FLOOR:
-                            fprintf(stderr,"floor\n");
-                            random_floor()->render(screen_x,screen_y);
-                            break;
-                        case WALL:
-                            fprintf(stderr,"wall\n");
-                            wall.render(screen_x,screen_y);
-                            wall.debug();
-                            break;
-                        default:
-                            fprintf(stderr,"No tile at (%d,%d)\n",dx,dy);
+
+                    int screen_x = S_W/2 + (dx - x_)*TILE_SIZE;
+                    int screen_y = S_H/2 + (dy - y_)*TILE_SIZE;
+
+                    if(0 < tiles[dx][dy] && tiles[dx][dy] <= 8) {
+                        floor_textures[tiles[dx][dy]-1].render(screen_x,screen_y);
+                    } else if(tiles[dx][dy] == WALL) {
+                        wall.render(screen_x,screen_y);
+                    } else if(tiles[dx][dy] == FLOOR) {
+                        tiles[dx][dy] = 1+(rand() % NUM_FLOORS);
+                        floor_textures[tiles[dx][dy]-1].render(screen_x,screen_y);
                     }
+
                 }
+
             }
 
         }
+
     } 
+
+}
+
+
+void LevelMap::handle(SDL_Event* e) {
+    if(e->type == SDL_KEYDOWN && e->key.repeat == 0) {
+        switch(e->key.keysym.sym) { //NOTE TO SELF: THIS IS *BACKWARDS*
+            case SDLK_UP:
+                vy_ += SPEED;
+                break;
+            case SDLK_DOWN:
+                vy_ -= SPEED;
+                break;
+            case SDLK_LEFT:
+                vx_ += SPEED;
+                break;
+            case SDLK_RIGHT:
+                vx_ -= SPEED;
+                break;
+        }
+        //Velocity is set
+    } else if(e->type == SDL_KEYUP && e->key.repeat == 0) {
+        switch(e->key.keysym.sym) {
+            case SDLK_UP:
+            case SDLK_DOWN:
+                vy_ = 0;
+                break;
+            case SDLK_LEFT:
+            case SDLK_RIGHT:
+                vx_ = 0;
+                break;
+        }
+        //Velocity is unset
+    }
+    fprintf(stderr,"Level velocity: (%d,%d)\n",vx_,vy_);
+}
+
+void LevelMap::update() {
+    //move and do collision checking
+    x_ += vx_;
+    y_ += vy_;
+    //collisions?
+
 }

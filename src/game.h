@@ -11,7 +11,7 @@
 #include "globalstate.h"
 #include "levelmap.h"
 
-#define TITLE "cool preprocessor title"
+#define TITLE "David"
 #define S_W 1280
 #define S_H 960
 #define MAX_FPS 60
@@ -60,4 +60,5 @@ class Game {
 		void run();
 		void handle(SDL_Event &);
 		void render();
+        void update();
 };

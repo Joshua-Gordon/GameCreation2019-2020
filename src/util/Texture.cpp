@@ -81,5 +81,5 @@ int Texture::getHeight() const {
 }
 
 void Texture::debug() {
-    fprintf(stderr,"Texture pointer %p\n",texture_);
+    //fprintf(stderr,"Texture pointer %p\n",texture_);
 }

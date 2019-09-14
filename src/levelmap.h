@@ -14,12 +14,18 @@ using std::to_string;
 #define FLOOR 16777215 //white
 #define WALL 0 //black
 
-#define VISION_RADIUS_MAX 5
+//#define VISION_RADIUS_MAX 5
+
+#define SPEED 1
 
 class LevelMap {
     private:
+
+        int S_W,S_H;
+
         int w_,h_;
-        int x_,y_;
+        int x_,y_; //player's location a.k.a. where the camera is
+        int vx_,vy_;
         int zoom_level;
         int** tiles;
         Texture floor_textures[NUM_FLOORS];
@@ -31,13 +37,16 @@ class LevelMap {
 
     public:
         LevelMap();
-        LevelMap(const char*,SDL_Renderer*);
+        LevelMap(const char*,SDL_Renderer*,int,int);
         ~LevelMap();
 
         void setRenderer(SDL_Renderer* r){rend = r;}
+        void setScreenSize(int w, int h) {S_W = w; S_H = h;}
         void load_from_file(const char*);
         void print();
 
         void render();
+        void handle(SDL_Event*);
+        void update();
 
 };
