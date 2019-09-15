@@ -49,8 +49,9 @@ Game::Game() : timer_(), frames_(0), running_(false) {
 	root_.addChild(&text_);
     fprintf(stderr,"Loading map...\n");
     lm.setRenderer(renderer_);
-    lm.load_from_file("assets/test_map.png");
+    lm.load_from_file("assets/test_map2.png");
     lm.setScreenSize(S_W,S_H);
+    lm.setLocation(1,1);
     fprintf(stderr,"Loaded map!\n");
 }
 
@@ -86,8 +87,8 @@ void Game::run() {
 
 		frames_++;
 		int ticks = fps.getTicks();
-		if(ticks < TICKS_PER_FRAME) {
-			SDL_Delay(TICKS_PER_FRAME - ticks);
+		if(ticks < TICK_RATE) {
+			SDL_Delay(TICK_RATE - ticks);
 		}
 	}
 }

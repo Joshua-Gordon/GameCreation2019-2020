@@ -15,7 +15,7 @@
 #define S_W 1280
 #define S_H 960
 #define MAX_FPS 60
-#define TICKS_PER_FRAME (1000 / MAX_FPS)
+#define TICK_RATE 30
 
 
 class Game {
@@ -61,4 +61,6 @@ class Game {
 		void handle(SDL_Event &);
 		void render();
         void update();
+
+        void debug(int x,int y){lm.setLocation(x,y);}
 };

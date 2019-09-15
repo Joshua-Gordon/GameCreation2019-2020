@@ -161,13 +161,22 @@ void LevelMap::handle(SDL_Event* e) {
         }
         //Velocity is unset
     }
-    fprintf(stderr,"Level velocity: (%d,%d)\n",vx_,vy_);
 }
 
 void LevelMap::update() {
     //move and do collision checking
+    fprintf(stderr,"Player is at: (%d,%d)\n",x_,y_);
     x_ += vx_;
+    int tile = tiles[x_][y_];
+    if(tile == WALL) {
+        x_ -= vx_;
+        fprintf(stderr,"Collision at x_ = %d\n",x_);
+    }
     y_ += vy_;
-    //collisions?
+    tile = tiles[x_][y_];
+    if(tile == WALL) {
+        y_ -= vy_;
+        fprintf(stderr,"Collision at y_ = %d\n",y_);
+    }
 
 }

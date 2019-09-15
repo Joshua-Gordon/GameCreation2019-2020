@@ -40,6 +40,8 @@ class LevelMap {
         LevelMap(const char*,SDL_Renderer*,int,int);
         ~LevelMap();
 
+        void setLocation(int x, int y) {x_ = x; y_ = y;}
+
         void setRenderer(SDL_Renderer* r){rend = r;}
         void setScreenSize(int w, int h) {S_W = w; S_H = h;}
         void load_from_file(const char*);
