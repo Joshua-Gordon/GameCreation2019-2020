@@ -137,18 +137,18 @@ void LevelMap::render() {
 
 void LevelMap::handle(SDL_Event* e) {
     if(e->type == SDL_KEYDOWN && e->key.repeat == 0) {
-        switch(e->key.keysym.sym) { //NOTE TO SELF: THIS IS *BACKWARDS*
+        switch(e->key.keysym.sym) { 
             case SDLK_UP:
-                vy_ += SPEED;
-                break;
-            case SDLK_DOWN:
                 vy_ -= SPEED;
                 break;
+            case SDLK_DOWN:
+                vy_ += SPEED;
+                break;
             case SDLK_LEFT:
-                vx_ += SPEED;
+                vx_ -= SPEED;
                 break;
             case SDLK_RIGHT:
-                vx_ -= SPEED;
+                vx_ += SPEED;
                 break;
         }
         //Velocity is set
@@ -171,14 +171,15 @@ void LevelMap::update() {
     //move and do collision checking
     fprintf(stderr,"Player is at: (%d,%d)\n",x_,y_);
     x_ += vx_;
-    int tile = tiles[x_][y_];
-    if(tile == WALL) {
+    int tile[] = {tiles[x_][y_],tiles[x_][y_+1]};
+    if(tile[0] == WALL || tile[1] == WALL) {
         x_ -= vx_;
         fprintf(stderr,"Collision at x_ = %d\n",x_);
     }
     y_ += vy_;
-    tile = tiles[x_][y_];
-    if(tile == WALL) {
+    tile[0] = tiles[x_][y_];
+    tile[1] = tiles[x_][y_+1];
+    if(tile[0] == WALL || tile[1] == WALL) {
         y_ -= vy_;
         fprintf(stderr,"Collision at y_ = %d\n",y_);
     }
