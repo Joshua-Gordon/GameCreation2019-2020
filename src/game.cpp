@@ -53,6 +53,10 @@ Game::Game() : timer_(), frames_(0), running_(false) {
     lm.setScreenSize(S_W,S_H);
     lm.setLocation(1,1);
     fprintf(stderr,"Loaded map!\n");
+
+    p.init(renderer(),lm);
+    fprintf(stderr,"Player init finished\n");
+
 }
 
 Game::~Game() {
@@ -97,18 +101,19 @@ void Game::handle(SDL_Event &e) {
 	if(e.type == SDL_QUIT) {
 		stop();
 	}
-    lm.handle(&e);
+    p.handle(&e);
 	if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_q) {
 		stop();
 	}
 }
 
 void Game::render() {
-    lm.render();
+    fprintf(stderr,"Render\n");
+    p.render(globalState());
 	//text_.setX(100 + frames_);
 	//root_.render(RenderProxy(), globalState());
 }
 
 void Game::update() {
-    lm.update();
+    p.update();
 }

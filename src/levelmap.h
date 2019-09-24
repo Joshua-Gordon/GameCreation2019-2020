@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 #include <string>
 using std::string;
@@ -44,6 +46,8 @@ class LevelMap {
 
         void setRenderer(SDL_Renderer* r){rend = r;}
         void setScreenSize(int w, int h) {S_W = w; S_H = h;}
+        int getScreenW(){return S_W;}
+        int getScreenH(){return S_H;}
         void load_from_file(const char*);
         void print();
 

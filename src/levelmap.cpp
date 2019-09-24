@@ -74,6 +74,7 @@ void LevelMap::load_from_file(const char* fname) {
 }
 
 LevelMap::~LevelMap() {
+    fprintf(stderr,"Deleting levelmap\n");
     for(int x = 0; x < w_; ++x) {
         free(tiles[x]);
     }
@@ -95,11 +96,12 @@ void LevelMap::print() {
     }
 }
 
-void LevelMap::render() { //needs rewrite
-   
+void LevelMap::render() { 
+
     int viz_x = (S_W/2)/TILE_SIZE;
     int viz_y = (S_H/2)/TILE_SIZE;
 
+    fprintf(stderr,"x_=%d,y_=%d\n",x_,y_);
     for(int dx = x_ - viz_x; dx < x_ + viz_x; ++dx) {
 
         if(dx >= 0 && dx < w_) {
@@ -111,6 +113,7 @@ void LevelMap::render() { //needs rewrite
                     int screen_x = S_W/2 + (dx - x_)*TILE_SIZE;
                     int screen_y = S_H/2 + (dy - y_)*TILE_SIZE;
 
+
                     if(0 < tiles[dx][dy] && tiles[dx][dy] <= 8) {
                         floor_textures[tiles[dx][dy]-1].render(screen_x,screen_y);
                     } else if(tiles[dx][dy] == WALL) {
@@ -119,6 +122,7 @@ void LevelMap::render() { //needs rewrite
                         tiles[dx][dy] = 1+(rand() % NUM_FLOORS);
                         floor_textures[tiles[dx][dy]-1].render(screen_x,screen_y);
                     }
+                    
 
                 }
 

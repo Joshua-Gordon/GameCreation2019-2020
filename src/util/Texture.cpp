@@ -20,6 +20,7 @@ bool Texture::loadFromFile(std::string path) {
     SDL_Surface* loadedSurface = IMG_Load(path.c_str());
     if(loadedSurface == NULL) {
         fprintf(stderr,"Could not load image %s!\n",path.c_str());
+        fprintf(stderr,"Path is %s\n",path.c_str());
     } else {
         fprintf(stderr,"Loaded image %s!\n",path.c_str());
     }

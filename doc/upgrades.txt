@@ -1,0 +1,10 @@
+Cameras (Vision)
+CPU (How many upgrades you can have)
+Chassis (Armor, limbs)
+Arms (Hold weapons n shit)
+Leg (Hold more weapons n shit)
+
+Stats:
+Overall HP (Durability)
+Upgrade Points (GIGAFLOPS) (Durability)
+Recovery Rate

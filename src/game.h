@@ -10,6 +10,7 @@
 #include "animatedsprite.h"
 #include "globalstate.h"
 #include "levelmap.h"
+#include "player.h"
 
 #define TITLE "David"
 #define S_W 1280
@@ -33,6 +34,7 @@ class Game {
 		Texture text_t, pizza_t, ply_t;
 
         LevelMap lm;
+        Player p;
 
 	public:
 		Game();

@@ -29,5 +29,7 @@ void AnimatedSprite::render(const RenderProxy &r, const GlobalState &gs) {
 			recomputeClip();
 		}
 	}
+    fprintf(stderr,"AS::render?\n");
 	Sprite::render(r, gs);
+    fprintf(stderr,"AS::render!\n");
 }
