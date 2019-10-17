@@ -26,6 +26,10 @@ void Player::init(const SDL_Renderer* r,LevelMap & l) {
 
     lm = l;
     dir = 0;
+    fprintf(stderr,"Loading enemies...\n");
+    lm.load_enemies();
+    fprintf(stderr,"Loaded enemies.\n");
+
 }
 
 
@@ -55,7 +59,7 @@ void Player::update() {
 
 void Player::render(const GlobalState & gs) {
     fprintf(stderr,"Player render begin!\n");
-    lm.render();
+    lm.render(gs);
     fprintf(stderr,"Level render finish!\n");
     as_walk[dir].render(RenderProxy(lm.getScreenW()/2,lm.getScreenH()/2),gs);
     fprintf(stderr,"Player render finish!\n");

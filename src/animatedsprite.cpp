@@ -15,7 +15,7 @@ void AnimatedSprite::reset() {
 	frame_ = 0;
 	maxframe_ = xdivs_;
 	idle_ = false;
-	period_ = 1;
+	period_ = 5;
 	lastchange = -1;
 }
 

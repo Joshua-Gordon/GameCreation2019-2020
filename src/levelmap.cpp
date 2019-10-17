@@ -96,7 +96,7 @@ void LevelMap::print() {
     }
 }
 
-void LevelMap::render() { 
+void LevelMap::render(const GlobalState& gs) { 
 
     int viz_x = (S_W/2)/TILE_SIZE;
     int viz_y = (S_H/2)/TILE_SIZE;
@@ -131,7 +131,9 @@ void LevelMap::render() {
         }
 
     } 
-
+    for(auto i = entities.begin(); i != entities.end(); ++i) {
+        (*i)->render(gs,x_,y_,S_W,S_H);
+    }
 }
 
 
@@ -183,5 +185,19 @@ void LevelMap::update() {
         y_ -= vy_;
         fprintf(stderr,"Collision at y_ = %d\n",y_);
     }
+    for(auto i = entities.begin(); i != entities.end(); ++i) {
+        (*i)->update();
+    }
+}
 
+void LevelMap::load_enemies() {
+    Texture* t = new Texture();
+    t->setRenderer(rend);
+    t->loadFromFile("assets/test_kirb.png");
+    AnimatedSprite as(t,0,0,2,1);
+    fprintf(stderr,"e is about to be constructed for load_enemies\n");
+    DoNothing* e = new DoNothing(10,20,as,rend);
+    fprintf(stderr,"e constructed. e.getx()=%d,e.gety()=%d\n",e->getx(),e->gety());
+    fprintf(stderr,"e is constructed for load_enemies\n");
+    this->insert_entity(e);
 }
