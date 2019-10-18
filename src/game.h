@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 
 #include "util/Timer.h"
 #include "util/Texture.h"
@@ -35,6 +36,8 @@ class Game {
 
         LevelMap lm;
         Player p;
+
+        Mix_Music* level_music;
 
 	public:
 		Game();

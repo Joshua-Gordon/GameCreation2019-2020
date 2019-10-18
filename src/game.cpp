@@ -15,9 +15,10 @@
 } while(0)
 
 Game::Game() : timer_(), frames_(0), running_(false) {
-    CHECK(SDL_Init(SDL_INIT_VIDEO)); //Video
+    CHECK(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)); //Video and Audio
     CHECK(IMG_Init(IMG_INIT_PNG));   //PNG
     CHECK(TTF_Init());
+    CHECK(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048)); //SDL_mixer; frequency, format, number of channels, sample size
 
 	if(!(window_ = SDL_CreateWindow(
 			TITLE,
@@ -54,6 +55,9 @@ Game::Game() : timer_(), frames_(0), running_(false) {
     lm.setLocation(1,1);
     fprintf(stderr,"Loaded map!\n");
 
+    level_music = Mix_LoadMUS("assets/Factory.mp3");
+    fprintf(stderr,"Loaded music!\n");
+
     p.init(renderer(),lm);
     fprintf(stderr,"Player init finished\n");
 
@@ -65,7 +69,11 @@ Game::~Game() {
 	SDL_DestroyWindow(window_);
 	window_ = NULL;
 
+    Mix_FreeMusic(level_music);
+    level_music = NULL;
+
 	IMG_Quit();
+    Mix_Quit();
 	SDL_Quit();
 	fprintf(stderr, "Thank you for playing Wing Commander\n");
 }
@@ -83,6 +91,11 @@ void Game::run() {
 		while(SDL_PollEvent(&e)) {
 			handle(e);
 		}
+
+        //If the music is not playing
+        if(Mix_PlayingMusic() == 0) {
+            Mix_PlayMusic(level_music,-1); //-1 because we don't care which channel
+        }
 
 		SDL_RenderClear(renderer_);
 		render();
